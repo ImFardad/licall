@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoiceConnect - Premium Voice Calling</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+        .ring-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+        .participant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        .audio-wave {
+            display: flex;
+            justify-content: space-between;
+            width: 40px;
+            height: 30px;
+            align-items: flex-end;
+        }
+        .audio-wave span {
+            width: 4px;
+            height: 5px;
+            background-color: #10b981;
+            border-radius: 2px;
+            animation: audio-wave 1.5s infinite ease-in-out;
+        }
+        .audio-wave span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .audio-wave span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        .audio-wave span:nth-child(4) {
+            animation-delay: 0.6s;
+        }
+        .audio-wave span:nth-child(5) {
+            animation-delay: 0.8s;
+        }
+        @keyframes audio-wave {
+            0%, 100% {
+                height: 5px;
+            }
+            50% {
+                height: 20px;
+            }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-gray-100 font-sans">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-8">
+            <div class="flex items-center">
+                <i class="fas fa-phone-alt text-blue-400 text-2xl mr-3"></i>
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">VoiceConnect</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="relative tooltip">
+                    <button class="p-2 rounded-full hover:bg-gray-700 transition">
+                        <i class="fas fa-cog text-blue-400"></i>
+                    </button>
+                    <span class="tooltip-text absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 transition-opacity">Settings</span>
+                </div>
+                <div class="relative tooltip">
+                    <button class="p-2 rounded-full hover:bg-gray-700 transition">
+                        <i class="fas fa-question-circle text-green-400"></i>
+                    </button>
+                    <span class="tooltip-text absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 transition-opacity">Help</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex flex-col lg:flex-row gap-8">
+            <!-- Main Call Section -->
+            <div class="lg:flex-1 bg-gray-800 rounded-xl p-6 shadow-lg">
+                <div class="flex flex-col items-center justify-center h-full">
+                    <div class="mb-8 text-center">
+                        <h2 class="text-2xl font-bold mb-2">Team Meeting</h2>
+                        <p class="text-gray-400">Call duration: 24:36</p>
+                    </div>
+
+                    <!-- Video/Avatar Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 w-full">
+                        <div class="bg-gray-900 rounded-xl aspect-video flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="w-24 h-24 rounded-full bg-blue-900 flex items-center justify-center mx-auto mb-4">
+                                    <span class="text-blue-400 text-2xl font-semibold">JD</span>
+                                </div>
+                                <p class="font-medium">John Doe</p>
+                                <p class="text-sm text-gray-400">Host</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-900 rounded-xl aspect-video flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="w-24 h-24 rounded-full bg-purple-900 flex items-center justify-center mx-auto mb-4">
+                                    <span class="text-purple-400 text-2xl font-semibold">AS</span>
+                                </div>
+                                <p class="font-medium">Alice Smith</p>
+                                <div class="flex items-center justify-center">
+                                    <div class="audio-wave mr-2">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </div>
+                                    <span class="text-xs text-gray-400">Speaking</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Call Controls -->
+                    <div class="flex flex-wrap justify-center gap-4 mt-8 w-full">
+                        <!-- Mute Button -->
+                        <div class="relative tooltip">
+                            <button id="muteBtn" class="bg-gray-700 hover:bg-gray-600 w-14 h-14 rounded-full flex items-center justify-center transition-all transform hover:scale-110">
+                                <i class="fas fa-microphone text-green-400 text-xl"></i>
+                            </button>
+                            <span class="tooltip-text absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 transition-opacity">Mute</span>
+                        </div>
+
+                        <!-- Video Button -->
+                        <div class="relative tooltip">
+                            <button class="bg-gray-700 hover:bg-gray-600 w-14 h-14 rounded-full flex items-center justify-center transition-all transform hover:scale-110">
+                                <i class="fas fa-video text-blue-400 text-xl"></i>
+                            </button>
+                            <span class="tooltip-text absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 transition-opacity">Video</span>
+                        </div>
+
+                        <!-- Screen Share -->
+                        <div class="relative tooltip">
+                            <button class="bg-gray-700 hover:bg-gray-600 w-14 h-14 rounded-full flex items-center justify-center transition-all transform hover:scale-110">
+                                <i class="fas fa-desktop text-blue-400 text-xl"></i>
+                            </button>
+                            <span class="tooltip-text absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 transition-opacity">Share Screen</span>
+                        </div>
+
+                        <!-- Participants -->
+                        <div class="relative tooltip">
+                            <button class="bg-gray-700 hover:bg-gray-600 w-14 h-14 rounded-full flex items-center justify-center transition-all transform hover:scale-110">
+                                <i class="fas fa-users text-blue-400 text-xl"></i>
+                            </button>
+                            <span class="tooltip-text absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 transition-opacity">Participants</span>
+                        </div>
+
+                        <!-- Disconnect -->
+                        <div class="relative tooltip">
+                            <button id="disconnectBtn" class="bg-red-600 hover:bg-red-700 w-14 h-14 rounded-full flex items-center justify-center transition-all transform hover:scale-110">
+                                <i class="fas fa-phone-slash text-white text-xl"></i>
+                            </button>
+                            <span class="tooltip-text absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 transition-opacity">Disconnect</span>
+                        </div>
+                    </div>
+
+                    <!-- More Options -->
+                    <div class="mt-6 flex justify-center space-x-6">
+                        <div class="relative">
+                            <button id="micOptionsBtn" class="flex items-center text-gray-400 hover:text-blue-400 transition">
+                                <i class="fas fa-microphone mr-2"></i>
+                                <span>Microphone</span>
+                                <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                            </button>
+                            <div id="micOptions" class="hidden absolute left-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg z-10">
+                                <div class="py-1">
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Built-in Microphone</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Headset Microphone</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Bluetooth Headset</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <button id="speakerOptionsBtn" class="flex items-center text-gray-400 hover:text-blue-400 transition">
+                                <i class="fas fa-volume-up mr-2"></i>
+                                <span>Speaker</span>
+                                <i class="fas fa-chevron-down ml-2 text-xs"></i>
+                            </button>
+                            <div id="speakerOptions" class="hidden absolute left-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg z-10">
+                                <div class="py-1">
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Built-in Speakers</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Headphones</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">External Speakers</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Participants Section -->
+            <div class="lg:w-1/4 bg-gray-800 rounded-xl p-6 shadow-lg">
+                <h2 class="text-lg font-semibold mb-4 flex items-center">
+                    <i class="fas fa-users mr-2 text-blue-400"></i>
+                    Participants (5)
+                </h2>
+                <div class="space-y-4">
+                    <!-- Current User -->
+                    <div class="flex items-center bg-gray-700 p-3 rounded-lg">
+                        <div class="relative mr-3">
+                            <div class="w-10 h-10 rounded-full bg-green-900 flex items-center justify-center ring-2 ring-green-400 ring-animation">
+                                <span class="text-green-400 font-semibold">YO</span>
+                            </div>
+                            <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-gray-800"></div>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-medium">You</p>
+                            <div class="flex items-center">
+                                <div class="audio-wave mr-2">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                                <span class="text-xs text-gray-400">Speaking</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Other Participants -->
+                    <div class="participant-card bg-gray-700 p-3 rounded-lg hover:bg-gray-600 transition cursor-pointer">
+                        <div class="flex items-center">
+                            <div class="relative mr-3">
+                                <div class="w-10 h-10 rounded-full bg-blue-900 flex items-center justify-center">
+                                    <span class="text-blue-400 font-semibold">JD</span>
+                                </div>
+                                <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-gray-800"></div>
+                            </div>
+                            <div>
+                                <p class="font-medium">John Doe</p>
+                                <p class="text-xs text-gray-400">Host</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="participant-card bg-gray-700 p-3 rounded-lg hover:bg-gray-600 transition cursor-pointer">
+                        <div class="flex items-center">
+                            <div class="relative mr-3">
+                                <div class="w-10 h-10 rounded-full bg-purple-900 flex items-center justify-center">
+                                    <span class="text-purple-400 font-semibold">AS</span>
+                                </div>
+                                <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-gray-800"></div>
+                            </div>
+                            <div>
+                                <p class="font-medium">Alice Smith</p>
+                                <p class="text-xs text-gray-400">Speaking</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="participant-card bg-gray-700 p-3 rounded-lg hover:bg-gray-600 transition cursor-pointer">
+                        <div class="flex items-center">
+                            <div class="relative mr-3">
+                                <div class="w-10 h-10 rounded-full bg-yellow-900 flex items-center justify-center">
+                                    <span class="text-yellow-400 font-semibold">RJ</span>
+                                </div>
+                                <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-gray-500 rounded-full border-2 border-gray-800"></div>
+                            </div>
+                            <div>
+                                <p class="font-medium">Robert Johnson</p>
+                                <p class="text-xs text-gray-400">Muted</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="participant-card bg-gray-700 p-3 rounded-lg hover:bg-gray-600 transition cursor-pointer">
+                        <div class="flex items-center">
+                            <div class="relative mr-3">
+                                <div class="w-10 h-10 rounded-full bg-red-900 flex items-center justify-center">
+                                    <span class="text-red-400 font-semibold">ME</span>
+                                </div>
+                                <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-gray-500 rounded-full border-2 border-gray-800"></div>
+                            </div>
+                            <div>
+                                <p class="font-medium">Maria Garcia</p>
+                                <p class="text-xs text-gray-400">Away</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Exit Modal -->
+        <div id="exitModal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+            <div class="bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-semibold">Leave Call?</h3>
+                    <button id="closeModal" class="text-gray-400 hover:text-white">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <p class="text-gray-300 mb-6">Are you sure you want to leave this call? You can rejoin later if needed.</p>
+                <div class="flex justify-end space-x-4">
+                    <button id="cancelExit" class="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 transition">
+                        Cancel
+                    </button>
+                    <button id="confirmExit" class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 transition">
+                        Leave Call
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle mute button
+        const muteBtn = document.getElementById('muteBtn');
+        let isMuted = false;
+        
+        muteBtn.addEventListener('click', () => {
+            isMuted = !isMuted;
+            if (isMuted) {
+                muteBtn.innerHTML = '<i class="fas fa-microphone-slash text-red-400 text-xl"></i>';
+                muteBtn.querySelector('.tooltip-text').textContent = 'Unmute';
+                // Show muted status in participant list
+                document.querySelector('.participant-card:first-child p:last-child').textContent = 'Muted';
+            } else {
+                muteBtn.innerHTML = '<i class="fas fa-microphone text-green-400 text-xl"></i>';
+                muteBtn.querySelector('.tooltip-text').textContent = 'Mute';
+                // Show speaking status in participant list
+                document.querySelector('.participant-card:first-child p:last-child').textContent = 'Speaking';
+            }
+        });
+
+        // Show microphone options
+        const micOptionsBtn = document.getElementById('micOptionsBtn');
+        const micOptions = document.getElementById('micOptions');
+        
+        micOptionsBtn.addEventListener('click', () => {
+            micOptions.classList.toggle('hidden');
+            speakerOptions.classList.add('hidden');
+        });
+
+        // Show speaker options
+        const speakerOptionsBtn = document.getElementById('speakerOptionsBtn');
+        const speakerOptions = document.getElementById('speakerOptions');
+        
+        speakerOptionsBtn.addEventListener('click', () => {
+            speakerOptions.classList.toggle('hidden');
+            micOptions.classList.add('hidden');
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!micOptionsBtn.contains(e.target) && !micOptions.contains(e.target)) {
+                micOptions.classList.add('hidden');
+            }
+            if (!speakerOptionsBtn.contains(e.target) && !speakerOptions.contains(e.target)) {
+                speakerOptions.classList.add('hidden');
+            }
+        });
+
+        // Exit modal
+        const disconnectBtn = document.getElementById('disconnectBtn');
+        const exitModal = document.getElementById('exitModal');
+        const closeModal = document.getElementById('closeModal');
+        const cancelExit = document.getElementById('cancelExit');
+        const confirmExit = document.getElementById('confirmExit');
+        
+        disconnectBtn.addEventListener('click', () => {
+            exitModal.classList.remove('hidden');
+        });
+        
+        closeModal.addEventListener('click', () => {
+            exitModal.classList.add('hidden');
+        });
+        
+        cancelExit.addEventListener('click', () => {
+            exitModal.classList.add('hidden');
+        });
+        
+        confirmExit.addEventListener('click', () => {
+            // In a real app, this would disconnect from the call
+            alert('You have left the call. Redirecting to home page...');
+            exitModal.classList.add('hidden');
+            // window.location.href = '/';
+        });
+    </script>
+</body>
+</html>

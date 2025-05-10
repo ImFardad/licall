@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LiCall — Login</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <% if (!roomOpen) { %>
+      <h2>Room is currently closed</h2>
+      <p>Please ask an admin to <a href="/admin/login">open the room</a>.</p>
+    <% } else { %>
+      <h2>Join LiCall</h2>
+      <% if (error) { %><p class="error"><%= error %></p><% } %>
+      <div class="tabs">
+        <button data-tab="user">User Login</button>
+        <button data-tab="guest">Guest</button>
+      </div>
+      <div id="user" class="tab-content">
+        <form method="POST" action="/auth/login">
+          <label>Username<input name="username" required></label>
+          <label>Password<input name="password" type="password" required></label>
+          <button type="submit">Login</button>
+        </form>
+      </div>
+      <div id="guest" class="tab-content" style="display:none">
+        <form method="POST" action="/auth/guest">
+          <label>Your Name<input name="guestName" required></label>
+          <button type="submit">Request Join</button>
+        </form>
+      </div>
+      <script>
+        document.querySelectorAll('.tabs button').forEach(btn=>{
+          btn.onclick = ()=> {
+            document.querySelectorAll('.tab-content').forEach(c=>c.style.display='none');
+            document.getElementById(btn.dataset.tab).style.display = 'block';
+          };
+        });
+      </script>
+    <% } %>
+  </div>
+</body>
+</html>

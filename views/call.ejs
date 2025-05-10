@@ -1,0 +1,18 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8"><title>LiCall Room</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head><body>
+  <div id="controls"></div>
+  <div id="participants"></div>
+  <div id="chat"></div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/main-ui.js"></script>
+  <script src="/js/audio.js"></script>
+  <script src="/js/screen-share.js"></script>
+  <script src="/js/participants.js"></script>
+  <script src="/js/chat.js"></script>
+  <script>
+    const me = "<%= me %>", role = "<%= role %>";
+    initCall({ socketUrl: '/', me, role });
+  </script>
+</body></html>

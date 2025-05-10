@@ -1,0 +1,10 @@
+<form action="/admin/login" method="post">
+  <h2>Admin Login</h2>
+  <% if (error) { %><p class="error"><%= error %></p><% } %>
+  <input name="username" placeholder="Username" required>
+  <input name="password" type="password" placeholder="Password" required>
+  <button>Login</button>
+  <% if (roomOpen) { %>
+    <p>Room already open. <a href="/auth/login">Go join</a></p>
+  <% } %>
+</form>

@@ -1,0 +1,10 @@
+/voice-call-app
+  ├─ .env
+  ├─ package.json
+  ├─ index.js
+  ├─ /routes
+  ├─ /db
+  ├─ /public
+  │   ├─ /js
+  │   └─ /css
+  └─ /views
